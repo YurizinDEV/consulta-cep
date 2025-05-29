@@ -4,8 +4,8 @@ const cep = document.querySelector<HTMLInputElement>('#cep')!
 const logradouro = document.querySelector<HTMLInputElement>('#logradouro')!
 const numero = document.querySelector<HTMLInputElement>('#numero')!
 const bairro = document.querySelector<HTMLInputElement>('#bairro')!
-// const cidade = document.querySelector<HTMLInputElement>('#cidade')!
-// const estado = document.querySelector<HTMLInputElement>('#estado')!
+const cidade = document.querySelector<HTMLInputElement>('#cidade')!
+const estado = document.querySelector<HTMLInputElement>('#estado')!
 const comboEstados = document.querySelector<HTMLSelectElement>('#comboEstados')!
 const comboCidades = document.querySelector<HTMLSelectElement>('#comboCidades')!
 
@@ -28,13 +28,14 @@ async function carregarCidades(estadoSelecionado: string) {
   const result = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estadoSelecionado}/municipios`)
   const body = await result.json()
   comboCidades.innerHTML = '<option value="">Selecione uma cidade</option>'
+
   body.forEach((cidade: { id: number; nome: string }) => {
     const option = document.createElement('option')
     option.value = cidade.id.toString()
     option.textContent = cidade.nome
     comboCidades.appendChild(option)
   })
-  document.querySelector<HTMLInputElement>('#estado')!.value = comboEstados.value
+  estado.value = comboEstados.value
 
   return body
 }
@@ -57,8 +58,8 @@ function limparFormulario() {
   logradouro.value = ''
   numero.value = ''
   bairro.value = ''
-  document.querySelector<HTMLInputElement>('#cidade')!.value = ''
-  document.querySelector<HTMLInputElement>('#estado')!.value = ''
+  cidade.value = ''
+  estado.value = ''
 }
 
 async function consultarCep() {
@@ -67,21 +68,23 @@ async function consultarCep() {
   const body = await result.json()
 
   limparFormulario()
+
   logradouro.value = body.street || ''
   bairro.value = body.neighborhood || ''
   comboEstados.value = body.state
-  document.querySelector<HTMLInputElement>('#estado')!.value = body.state
+  estado.value = body.state
 
   await carregarCidades(body.state)
+
   if (body.city) {
     for (let i = 0; i < comboCidades.options.length; i++) {
       const optionText = comboCidades.options[i].textContent || ''
-      
+
       if (optionText === body.city ||
         optionText.includes(body.city) ||
         body.city.includes(optionText)) {
         comboCidades.selectedIndex = i
-        document.querySelector<HTMLInputElement>('#cidade')!.value = optionText
+        cidade.value = optionText
         break
       }
     }

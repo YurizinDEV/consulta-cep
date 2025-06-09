@@ -4,8 +4,6 @@ const cep = document.querySelector<HTMLInputElement>('#cep')!
 const logradouro = document.querySelector<HTMLInputElement>('#logradouro')!
 const numero = document.querySelector<HTMLInputElement>('#numero')!
 const bairro = document.querySelector<HTMLInputElement>('#bairro')!
-const cidade = document.querySelector<HTMLInputElement>('#cidade')!
-const estado = document.querySelector<HTMLInputElement>('#estado')!
 const comboEstados = document.querySelector<HTMLSelectElement>('#comboEstados')!
 const comboCidades = document.querySelector<HTMLSelectElement>('#comboCidades')!
 
@@ -22,7 +20,6 @@ async function preencherComboEstados() {
   })
 }
 
-
 // Função para carregar cidades de um estado
 async function carregarCidades(estadoSelecionado: string) {
   const result = await fetch(`https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estadoSelecionado}/municipios`)
@@ -35,7 +32,6 @@ async function carregarCidades(estadoSelecionado: string) {
     option.textContent = cidade.nome
     comboCidades.appendChild(option)
   })
-  estado.value = comboEstados.value
 
   return body
 }
@@ -48,7 +44,6 @@ comboEstados.addEventListener('change', async () => {
 
 preencherComboEstados()
 
-
 cep.addEventListener('blur', () => {
   consultarCep()
 })
@@ -58,8 +53,8 @@ function limparFormulario() {
   logradouro.value = ''
   numero.value = ''
   bairro.value = ''
-  cidade.value = ''
-  estado.value = ''
+  comboEstados.value = ''
+  comboCidades.innerHTML = '<option value="">Selecione uma cidade</option>'
 }
 
 async function consultarCep() {
@@ -71,24 +66,24 @@ async function consultarCep() {
 
   logradouro.value = body.street || ''
   bairro.value = body.neighborhood || ''
-  comboEstados.value = body.state
-  estado.value = body.state
+  if (body.state) {
+    comboEstados.value = body.state
+    await carregarCidades(body.state)
 
-  await carregarCidades(body.state)
+    if (body.city) {
+      for (let i = 0; i < comboCidades.options.length; i++) {
+        const optionText = comboCidades.options[i].textContent || ''
 
-  if (body.city) {
-    for (let i = 0; i < comboCidades.options.length; i++) {
-      const optionText = comboCidades.options[i].textContent || ''
-
-      if (optionText === body.city ||
-        optionText.includes(body.city) ||
-        body.city.includes(optionText)) {
-        comboCidades.selectedIndex = i
-        cidade.value = optionText
-        break
+        if (optionText === body.city ||
+          optionText.includes(body.city) ||
+          body.city.includes(optionText)) {
+            comboCidades.selectedIndex = i
+          break
+        }
       }
     }
   }
 
   numero.focus()
 }
+

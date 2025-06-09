@@ -6,19 +6,20 @@
 }
 
 body {
-    background-color: #f5f7fa;
+    background-color: #121212;
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     padding: 20px;
-    background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background-image: linear-gradient(135deg, #121212 0%, #2c2c2c 100%);
+    color: #e0e0e0;
 }
 
 form {
-    background-color: white;
+    background-color: #1e1e1e;
     border-radius: 12px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
     padding: 30px;
     width: 100%;
     max-width: 500px;
@@ -31,7 +32,7 @@ form::before {
     display: block;
     font-size: 24px;
     font-weight: 600;
-    color: #4a6baf;
+    color: #7289da;
     margin-bottom: 25px;
     text-align: center;
 }
@@ -46,37 +47,37 @@ label {
     margin-bottom: 6px;
     font-size: 14px;
     font-weight: 500;
-    color: #4a5568;
+    color: #e0e0e0;
 }
 
 input,
 select {
     width: 100%;
     padding: 12px 16px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #444444;
     border-radius: 8px;
     font-size: 15px;
     transition: all 0.3s;
-    color: #2d3748;
-    background-color: #f8fafc;
+    color: #e0e0e0;
+    background-color: #2d2d2d;
 }
 
 input:focus,
 select:focus {
     outline: none;
-    border-color: #4a6baf;
-    box-shadow: 0 0 0 3px rgba(74, 107, 175, 0.1);
+    border-color: #7289da;
+    box-shadow: 0 0 0 3px rgba(114, 137, 218, 0.2);
 }
 
 #cep {
-    background-color: #ebf4ff;
-    border-color: #4a6baf;
+    background-color: #313547;
+    border-color: #7289da;
     font-weight: 500;
 }
 
 input:hover,
 select:hover {
-    border-color: #cbd5e0;
+    border-color: #8ea1e1;
 }
 
 #comboEstados,
@@ -89,10 +90,48 @@ select:hover {
 }
 
 ::placeholder {
-    color: #a0aec0;
+    color: #888888;
     opacity: 0.7;
 }
 
 input:not(:placeholder-shown) {
-    border-left: 3px solid #48bb78;
+    border-left: 3px solid #43b581;
+}
+
+select:has(option:checked:not(:first-child)),
+select:has(option[selected]:not(:first-child)) {
+    border-left: 3px solid #43b581;
+}
+
+select option:checked:not(:first-child) {
+    background-color: rgba(67, 181, 129, 0.2);
+}
+
+button {
+    background-color: #7289da;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 10px;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #8ea1e1;
+}
+
+.error-message {
+    color: #ff5555;
+    font-size: 12px;
+    margin-top: 4px;
+}
+
+.success-message {
+    color: #43b581;
+    font-size: 12px;
+    margin-top: 4px;
 }
